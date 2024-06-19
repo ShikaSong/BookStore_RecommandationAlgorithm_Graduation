@@ -1,0 +1,56 @@
+<template>
+  <div>
+    <el-container>
+    <el-header style="display: flex; justify-content: flex-start; align-items: center ">
+
+
+      <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-left: 5px;">
+        <el-breadcrumb-item :to="{ path: '/games' }">
+<!--          <i :class="collapseIcon" style="font-size: 26px" ></i>-->
+          =主页
+        </el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: $route.path }">{{ $route.meta.name }}</el-breadcrumb-item>
+      </el-breadcrumb>
+      <i class="el-icon-quanping" style="font-size: 26px;" @click="handleFull"></i>
+
+    </el-header>
+    </el-container>
+
+
+    <div style="margin: 10px 0 20px 0; font-size: 30px; font-weight: bold">{{ news.title }}</div>
+    <div style="margin: 10px 0; font-size: 13px; color: #666">{{ news.author }}  <span style="margin-left: 20px">{{ news.time }}</span></div>
+    <div style=" box-shadow: 0 0 10px rgba(0, 0, 0, .12); padding: 10px">
+      <div v-html="news.content" ></div>
+
+
+
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'newsDetail',
+  data() {
+    return {
+      news: {}
+    }
+  },
+  methods: {
+    handleFull() {
+      document.documentElement.requestFullscreen()
+    },
+
+
+  },
+  created() {
+    let id = this.$route.query.id
+    if (!id) {
+      return
+    }
+    this.$request.get('/news/selectById/' + id).then(res => {
+      this.news = res.data
+    })
+  }
+}
+</script>
